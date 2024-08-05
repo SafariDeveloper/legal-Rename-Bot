@@ -13,7 +13,7 @@ import os, time
 from config import Config
 import random
 import string
-from helper.utils import get_verify_status, update_verify_status, get_shortlink
+from helper.verify_data import get_verify_status, update_verify_status, get_shortlink
 
 @Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
 async def rename_start(client, message):
