@@ -72,7 +72,7 @@ async def rename_start(client, message):
         link = await get_shortlink(Config.SHORTLINK_URL, Config.SHORTLINK_API, f'https://t.me/{temp.U_NAME}?start=verify_{token}')
         btn = [
             [InlineKeyboardButton("Token_Verify", url=link)],
-            [InlineKeyboardButton('👁‍Tutorial 👁‍', url=TUTORIAL)]
+            [InlineKeyboardButton('👁‍Tutorial 👁‍', url='https://t.me/yeiwkwkwk')]
         ]
         await message.reply("You not token_verify today! Kindly token_verify now.",
                             reply_markup=InlineKeyboardMarkup(btn))
