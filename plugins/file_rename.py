@@ -15,7 +15,7 @@ import random
 import string
 from helper.verify_data import get_verify_status, update_verify_status, get_shortlink
 
-@Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
+"""@Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
 async def rename_start(client, message):
     verify_status = await get_verify_status(message.from_user.id)
 	if message.content_type in ['audio', 'video', 'document']:
@@ -56,8 +56,51 @@ async def rename_start(client, message):
     	    reply_markup=ForceReply(True)
             )
         except:
-            pass
+            pass"""
 
+@Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
+async def rename_start(client, message):
+    verify_status = await get_verify_status(message.from_user.id)
+    if message.content_type in ['audio', 'video', 'document']:
+        data = message.caption if message.caption else ""
+        if verify_status['is_verified'] and Config.VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+            await update_verify_status(message.from_user.id, is_verified=False)
+
+    if IS_VERIFY and not verify_status['is_verified']:
+        token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        await update_verify_status(message.from_user.id, verify_token=token, link=data)
+        link = await get_shortlink(Config.SHORTLINK_URL, Config.SHORTLINK_API, f'https://t.me/{temp.U_NAME}?start=verify_{token}')
+        btn = [
+            [InlineKeyboardButton("Token_Verify", url=link)],
+            [InlineKeyboardButton('👁‍Tutorial 👁‍', url=TUTORIAL)]
+        ]
+        await message.reply("You not token_verify today! Kindly token_verify now.",
+                            reply_markup=InlineKeyboardMarkup(btn))
+        return
+    else:
+        file = getattr(message, message.media.value)
+        filename = file.file_name
+        if file.file_size > 2000 * 1024 * 1024:
+            return await message.reply_text(
+                "Sᴏʀʀy Bʀᴏ Tʜɪꜱ Bᴏᴛ Iꜱ Dᴏᴇꜱɴ'ᴛ Sᴜᴩᴩᴏʀᴛ Uᴩʟᴏᴀᴅɪɴɢ Fɪʟᴇꜱ Bɪɢɢᴇʀ Tʜᴀɴ 2Gʙ. ᴄᴏɴᴛᴀᴄᴛ ʙᴏᴛ <a href='https://t.me/Illegal_Developer/10'>ᴅᴇᴠᴇʟᴏᴘᴇʀ</a>"
+            )
+
+        try:
+            await message.reply_text(
+                text=f"**__Pʟᴇᴀꜱᴇ Eɴᴛᴇʀ Nᴇᴡ Fɪʟᴇɴᴀᴍᴇ...__**\n\n**Oʟᴅ Fɪʟᴇ Nᴀᴍᴇ** :- `{filename}`",
+                reply_to_message_id=message.id,
+                reply_markup=ForceReply(True)
+            )
+            await asyncio.sleep(30)
+        except FloodWait as e:
+            await asyncio.sleep(e.value)
+            await message.reply_text(
+                text=f"**__Pʟᴇᴀꜱᴇ Eɴᴛᴇʀ Nᴇᴡ Fɪʟᴇɴᴀᴍᴇ...__**\n\n**Oʟᴅ Fɪʟᴇ Nᴀᴍᴇ** :- `{filename}`",
+                reply_to_message_id=message.id,
+                reply_markup=ForceReply(True)
+            )
+        except:
+            pass
 
 
 @Client.on_message(filters.private & filters.reply)
