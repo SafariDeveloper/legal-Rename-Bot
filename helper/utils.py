@@ -5,7 +5,7 @@ from config import Config, Txt
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import asyncio
 from helper.database import db
-
+import Shortzy
 
 async def progress_for_pyrogram(current, total, ud_type, message, start):
     now = time.time()
@@ -103,3 +103,7 @@ def get_readable_time(seconds):
             result += f'{int(period_value)}{period_name}'
     return result
 
+async def get_shortlink(url, api, link):
+    shortzy = Shortzy(api_key=api, base_site=url)
+    link = await shortzy.convert(link)
+    return link
