@@ -66,7 +66,7 @@ async def rename_start(client, message):
         if verify_status['is_verified'] and Config.VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
             await update_verify_status(message.from_user.id, is_verified=False)
 
-    if Config.IS_VERIFY and not verify_status['is_verified']:
+    if IS_VERIFY and not verify_status['is_verified']:
         token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         await update_verify_status(message.from_user.id, verify_token=token, link=data)
         link = await get_shortlink(Config.SHORTLINK_URL, Config.SHORTLINK_API, f'https://t.me/{temp.U_NAME}?start=verify_{token}')
