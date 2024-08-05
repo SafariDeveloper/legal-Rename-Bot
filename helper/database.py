@@ -18,7 +18,7 @@ class Database:
         return dict(
             _id=int(id),                                   
             file_id=None,
-            caption=None
+            caption=None, 
             verify_status=self.default_verify
         )
 
