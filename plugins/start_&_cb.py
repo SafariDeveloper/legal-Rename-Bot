@@ -27,7 +27,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply, CallbackQuery
 from helper.database import db
 from config import Config, Txt  
-  
+from helper.utils import get_verify_status, update_verify_status
 
 @Client.on_message(filters.private & filters.command("start"))
 async def start(client, message):
@@ -46,7 +46,12 @@ async def start(client, message):
         await message.reply_photo(Config.START_PIC, caption=Txt.START_TXT.format(user.mention), reply_markup=button)       
     else:
         await message.reply_text(text=Txt.START_TXT.format(user.mention), reply_markup=button, disable_web_page_preview=True)
-   
+    data = message.command[1]
+    if data.startswith('verify'):
+        verify_status = await get_verify_status(message.from_user.id)
+        await update_verify_status(message.from_user.id, is_verified=True, verified_time=time.time())
+        await message.reply(f"✅ You successfully verified until: {get_readable_time(Config.VERIFY_EXPIRE)}")
+        return
 
 @Client.on_callback_query()
 async def cb_handler(client, query: CallbackQuery):
