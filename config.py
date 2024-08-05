@@ -21,7 +21,7 @@ License Link : https://github.com/IllegalDeveloper/ILLEGAL-RENAME-BOT/blob/main/
 """
 
 import re, os, time
-
+from os import environ
 id_pattern = re.compile(r'^.\d+$') 
 
 class Config(object):
