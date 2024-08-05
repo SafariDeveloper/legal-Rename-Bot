@@ -44,6 +44,11 @@ class Config(object):
     # wes response configuration     
     WEBHOOK = bool(os.environ.get("WEBHOOK", "True"))
 
+    # token verify system
+    SHORTLINK_URL = environ.get("SHORTLINK_URL", "ziplinker.net")
+    SHORTLINK_API = environ.get("SHORTLINK_API", "37752ccfafb8030f3614dd384405293d5a629203")
+    VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 86400)) # Add time in seconds
+    IS_VERIFY = is_enabled(environ.get("IS_VERIFY", "True"), True)
 
 class Txt(object):
     # part of text configuration
