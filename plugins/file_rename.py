@@ -10,7 +10,7 @@ from aiogram import types
 from asyncio import sleep
 from PIL import Image
 import os, time
-from config import Config
+from config import Config, IS_VERIFY
 import random
 import string
 from helper.verify_data import get_verify_status, update_verify_status, get_shortlink
