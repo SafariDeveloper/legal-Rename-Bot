@@ -1,6 +1,6 @@
 import asyncio
 from helper.database import db
-import Shortzy
+from shortzy import Shortzy
 
 async def get_verify_status(user_id):
     verify = await db.get_verify_status(user_id)
