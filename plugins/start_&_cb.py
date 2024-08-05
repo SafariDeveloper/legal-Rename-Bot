@@ -27,7 +27,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply, CallbackQuery
 from helper.database import db
 from config import Config, Txt  
-from helper.utils import get_verify_status, update_verify_status
+from helper.verify_data import get_verify_status, update_verify_status
 
 @Client.on_message(filters.private & filters.command("start"))
 async def start(client, message):
