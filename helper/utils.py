@@ -3,9 +3,7 @@ from datetime import datetime
 from pytz import timezone
 from config import Config, Txt 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-import asyncio
-from helper.database import db
-import Shortzy
+
 
 async def progress_for_pyrogram(current, total, ud_type, message, start):
     now = time.time()
@@ -81,29 +79,3 @@ async def send_log(b, u):
             f"**--Nᴇᴡ Uꜱᴇʀ Sᴛᴀʀᴛᴇᴅ Tʜᴇ Bᴏᴛ--**\n\nUꜱᴇʀ: {u.mention}\nIᴅ: `{u.id}`\nUɴ: @{u.username}\n\nDᴀᴛᴇ: {date}\nTɪᴍᴇ: {time}\n\nBy: {b.mention}"
         )
         
-
-async def get_verify_status(user_id):
-    verify = await db.get_verify_status(user_id)
-    return verify
-
-async def update_verify_status(user_id, verify_token="", is_verified=False, verified_time=0, link=""):
-    current = await get_verify_status(user_id)
-    current['verify_token'] = verify_token
-    current['is_verified'] = is_verified
-    current['verified_time'] = verified_time
-    current['link'] = link
-    await db.update_verify_status(user_id, current)
-    
-def get_readable_time(seconds):
-    periods = [('d', 86400), ('h', 3600), ('m', 60), ('s', 1)]
-    result = ''
-    for period_name, period_seconds in periods:
-        if seconds >= period_seconds:
-            period_value, seconds = divmod(seconds, period_seconds)
-            result += f'{int(period_value)}{period_name}'
-    return result
-
-async def get_shortlink(url, api, link):
-    shortzy = Shortzy(api_key=api, base_site=url)
-    link = await shortzy.convert(link)
-    return link
