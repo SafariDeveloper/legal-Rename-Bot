@@ -4,7 +4,7 @@ from pytz import timezone
 from config import Config, Txt 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import asyncio
-
+from helper.database import db
 
 
 async def progress_for_pyrogram(current, total, ud_type, message, start):
