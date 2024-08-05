@@ -3,7 +3,12 @@ from config import Config
 from .utils import send_log
 
 class Database:
-
+    default_verify = {
+        'is_verified': False,
+        'verified_time': 0,
+        'verify_token': "",
+        'link': ""
+    }
     def __init__(self, uri, database_name):
         self._client = motor.motor_asyncio.AsyncIOMotorClient(uri)
         self.db = self._client[database_name]
@@ -14,6 +19,7 @@ class Database:
             _id=int(id),                                   
             file_id=None,
             caption=None
+            verify_status=self.default_verify
         )
 
     async def add_user(self, b, m):
@@ -51,6 +57,15 @@ class Database:
     async def get_caption(self, id):
         user = await self.col.find_one({'_id': int(id)})
         return user.get('caption', None)
+        
+    async def get_verify_status(self, user_id):
+        user = await self.col.find_one({'_id':int(user_id)})
+        if user:
+            return user.get('verify_status', self.default_verify)
+        return self.default_verify
+        
+    async def update_verify_status(self, user_id, verify):
+        await self.col.update_one({'_id': int(user_id)}, {'$set': {'verify_status': verify}})
 
 
 db = Database(Config.DB_URL, Config.DB_NAME)
