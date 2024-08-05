@@ -61,7 +61,7 @@ async def rename_start(client, message):
 @Client.on_message(filters.private & (filters.document | filters.audio | filters.video))
 async def rename_start(client, message):
     verify_status = await get_verify_status(message.from_user.id)
-    if message.content_type in ['audio', 'video', 'document']:
+    if message.media in ['audio', 'video', 'document']:
         data = message.caption if message.caption else ""
         if verify_status['is_verified'] and Config.VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
             await update_verify_status(message.from_user.id, is_verified=False)
